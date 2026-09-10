@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b5a9c" />
+  <title>Trung tâm CSKH Thái Minh</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #f4f8fc;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    }
+
+    .app-shell {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background: #f4f8fc;
+    }
+
+    /*
+      Apps Script chèn banner cảnh báo ở phía trên Web App.
+      Dịch iframe lên đúng vùng banner để giao diện Dashboard bắt đầu từ mép trên.
+    */
+    #dashboard {
+      position: absolute;
+      left: 0;
+      top: -70px;
+      width: 100%;
+      height: calc(100% + 70px);
+      border: 0;
+      display: block;
+      background: #f4f8fc;
+    }
+
+    .loading {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 0;
+      color: #315979;
+      font-size: 14px;
+    }
+
+    #dashboard { z-index: 1; }
+
+    @media (max-width: 700px) {
+      #dashboard {
+        top: -64px;
+        height: calc(100% + 64px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div class="loading">Đang mở Tra cứu chương trình bán hàng...</div>
+    <iframe
+      id="dashboard"
+      src="https://script.google.com/macros/s/AKfycbyfcxBwlp3AUVs3y0_Tlu1q2N9YXALQVQdk-IBIL3eGKh8tDyOD4wpy8mHZKOxcVCFc/exec"
+      title="Tra cứu chương trình bán hàng - Trung tâm CSKH Thái Minh"
+      allow="clipboard-read; clipboard-write"
+      referrerpolicy="strict-origin-when-cross-origin"
+      loading="eager">
+    </iframe>
+  </div>
+</body>
+</html>
