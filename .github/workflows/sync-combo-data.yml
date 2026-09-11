@@ -1,0 +1,44 @@
+name: Sync Combo Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-combo-data.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch Apps Script JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 --retry-delay 2 \
+            'https://script.google.com/macros/s/AKfycbyfcxBwlp3AUVs3y0_Tlu1q2N9YXALQVQdk-IBIL3eGKh8tDyOD4wpy8mHZKOxcVCFc/exec' \
+            -o data.tmp.json
+          jq -e '.rows and .products and .departments and .doses' data.tmp.json >/dev/null
+          mv data.tmp.json data.json
+
+      - name: Commit if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- data.json; then
+            echo 'No data changes'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data.json
+          git commit -m 'Sync combo dashboard data'
+          git push
